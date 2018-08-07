@@ -228,30 +228,11 @@ class AutoFunctionRenderer(JsRenderer):
             content='\n'.join(self._content))
 
 
-class AutoClassRenderer(JsRenderer):
-    _template = 'class.rst'
-
-    def _template_vars(self, name, full_path, doclet):
-        return dict(
-            name=name,
-            params=self._formal_params(doclet),
-            fields=self._fields(doclet),
-            examples=doclet.get('examples', ''),
-            deprecated=doclet.get('deprecated', False),
-            see_also=doclet.get('see', []),
-            class_comment=doclet.get('classdesc', ''),
-            constructor_comment=doclet.get('description', ''),
-            content='\n'.join(self._content),
-            members=self._members_of(full_path,
-                                     include=self._options['members'],
-                                     exclude=self._options.get('exclude-members', set()),
-                                     should_include_private='private-members' in self._options)
-                    if 'members' in self._options else '')
-
+class MemberContainerRenderer(JsRenderer):
     def _members_of(self, full_path, include, exclude, should_include_private):
-        """Return RST describing the members of the named class.
+        """Return RST describing the members of the named object.
 
-        :arg full_path list: The unambiguous path of the class we're documenting
+        :arg full_path list: The unambiguous path of the object.
         :arg include: List of names of members to include. If empty, include
             all.
         :arg exclude: Set of names of members to exclude
@@ -276,7 +257,7 @@ class AutoClassRenderer(JsRenderer):
 
             This will either be the doclets explicitly listed after the
             ``:members:`` option, in that order; all doclets that are
-            members of the class; or listed members with remaining ones
+            members of the object; or listed members with remaining ones
             inserted at the placeholder "*".
 
             """
@@ -309,6 +290,45 @@ class AutoClassRenderer(JsRenderer):
             if (doclet.get('access', 'public') in ('public', 'protected')
                 or (doclet.get('access') == 'private' and should_include_private))
             and doclet['name'] not in exclude)
+
+
+class AutoClassRenderer(MemberContainerRenderer):
+    _template = 'class.rst'
+
+    def _template_vars(self, name, full_path, doclet):
+        return dict(
+            name=name,
+            params=self._formal_params(doclet),
+            fields=self._fields(doclet),
+            examples=doclet.get('examples', ''),
+            deprecated=doclet.get('deprecated', False),
+            see_also=doclet.get('see', []),
+            class_comment=doclet.get('classdesc', ''),
+            constructor_comment=doclet.get('description', ''),
+            content='\n'.join(self._content),
+            members=self._members_of(full_path,
+                                     include=self._options['members'],
+                                     exclude=self._options.get('exclude-members', set()),
+                                     should_include_private='private-members' in self._options)
+                    if 'members' in self._options else '')
+
+
+class AutoInterfaceRenderer(MemberContainerRenderer):
+    _template = 'interface.rst'
+    
+    def _template_vars(self, name, full_path, doclet):
+        return dict(
+            name=name,
+            description=doclet.get('description', ''),
+            deprecated=doclet.get('deprecated', False),
+            see_also=doclet.get('see', []),
+            examples=doclet.get('examples', ''),
+            content='\n'.join(self._content),
+            members=self._members_of(full_path,
+                                     include=self._options['members'],
+                                     exclude=self._options.get('exclude-members', set()),
+                                     should_include_private='private-members' in self._options)
+                    if 'members' in self._options else '')
 
 
 class AutoAttributeRenderer(JsRenderer):

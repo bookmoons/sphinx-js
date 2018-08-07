@@ -1,0 +1,1 @@
+.. js:autointerface:: ExampleInterface

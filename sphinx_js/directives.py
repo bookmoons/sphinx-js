@@ -7,10 +7,14 @@ JSDoc output, via closure. The renderer classes, able to be top-level classes,
 can access each other and collaborate.
 
 """
+from sphinx.domains.javascript import JSObject
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import flag
 
-from .renderers import AutoFunctionRenderer, AutoClassRenderer, AutoAttributeRenderer
+from .renderers import (AutoFunctionRenderer,
+                        AutoClassRenderer,
+                        AutoInterfaceRenderer,
+                        AutoAttributeRenderer)
 
 
 class JsDirective(Directive):
@@ -60,6 +64,31 @@ def auto_class_directive_bound_to_app(app):
             return AutoClassRenderer.from_directive(self, app).rst_nodes()
 
     return AutoClassDirective
+
+
+class InterfaceDirective(JSObject):
+    """Interface other objects may implement."""
+    display_prefix = 'interface '
+    allow_nesting = True
+
+
+def auto_interface_directive_bound_to_app(app):
+    class AutoInterfaceDirective(JsDirective):
+        """js:autointerface directive, which spits out a js:interface directive
+        
+        Takes a single argument which is a JSDoc interface name.
+        """
+        option_spec = JsDirective.option_spec.copy()
+        option_spec.update({
+            'members': lambda members: ([m.strip() for m in members.split(',')]
+                                        if members else []),
+            'exclude-members': _members_to_exclude,
+            'private-members': flag})
+        
+        def run(self):
+            return AutoInterfaceRenderer.from_directive(self, app).rst_nodes()
+    
+    return AutoInterfaceDirective
 
 
 def auto_attribute_directive_bound_to_app(app):

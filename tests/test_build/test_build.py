@@ -210,6 +210,86 @@ class Tests(SphinxBuildTestCase):
             '     * "deprecatedFunction"\n\n'
             '     * "DeprecatedAttribute"\n')
 
+    def test_autointerface(self):
+        """Make sure interfaces show their description."""
+        contents = self._file_contents('autointerface')
+        assert_in('Interface doc.', contents)
+    
+    def test_autointerface_members(self):
+        """Make sure interfaces list their members if ``:members:`` specified.
+
+        Make sure it shows both functions and attributes. Make sure it doesn't show private members.
+        """
+        self._file_contents_eq(
+            'autointerface_members',
+            u'interface Interface\n\n   Interface doc.\n\n   Interface.argMethod()\n\n      Interface arg method.\n\n   Interface.noArgMethod()\n\n      Interface no arg method.\n\n   Interface.otherAttribute\n\n      Interface other attribute.\n\n   Interface.someAttribute\n\n      Interface attribute.\n')
+    
+    def test_autointerface_members_list(self):
+        """Make sure including a list of names after ``members`` limits it to
+        those names and follows the order you specify."""
+        self._file_contents_eq(
+            'autointerface_members_list',
+            'interface Interface\n\n   Interface doc.\n\n   Interface.someAttribute\n\n      Interface attribute.\n\n   Interface.noArgMethod()\n\n      Interface no arg method.\n')
+    
+    def test_autointerface_members_list_star(self):
+        """Make sure including ``*`` in a list of names after ``members``
+        includes the rest of the names in the normal order at that point."""
+        self._file_contents_eq(
+            'autointerface_members_list_star',
+            u'interface Interface\n\n   Interface doc.\n\n   Interface.someAttribute\n\n      Interface attribute.\n\n   Interface.argMethod()\n\n      Interface arg method.\n\n   Interface.otherAttribute\n\n      Interface other attribute.\n\n   Interface.noArgMethod()\n\n      Interface no arg method.\n')
+    
+    def test_autointerface_alphabetical(self):
+        """Make sure members sort alphabetically when not otherwise
+        specified."""
+        self._file_contents_eq(
+            'autointerface_alphabetical',
+            'interface NonAlphabeticalInterface\n\n   Non-alphabetical interface.\n\n   NonAlphabeticalInterface.a()\n\n      Fun a.\n\n   NonAlphabeticalInterface.z()\n\n      Fun z.\n')
+    
+    def test_autointerface_private_members(self):
+        """Make sure interfaces list their private members if
+        ``:private-members:`` is specified."""
+        contents = self._file_contents('autointerface_private_members')
+        assert_in('privateMethod()', contents)
+    
+    def test_autointerface_exclude_members(self):
+        """Make sure ``exclude-members`` option actually excludes listed
+        members."""
+        contents = self._file_contents('autointerface_exclude_members')
+        assert_in('someAttribute', contents)
+        assert_in('argMethod()', contents)
+        assert_not_in('otherAttribute', contents)
+        assert_not_in('noArgMethod()', contents)
+    
+    def test_autointerface_example(self):
+        """Make sure @example tags can be documented with autointerface."""
+        self._file_contents_eq(
+            'autointerface_example',
+            'interface ExampleInterface\n\n'
+            '   Example interface.\n\n'
+            '   **Examples:**\n\n'
+            '      // This is the example.\n'
+            '      new ImplementingClass();\n')
+    
+    def test_autointerface_deprecated(self):
+        """Make sure @deprecated tags can be documented
+        with autointerface."""
+        self._file_contents_eq(
+            'autointerface_deprecated',
+            'interface DeprecatedInterface\n\n'
+            '   Note: Deprecated.\n\n'
+            'interface DeprecatedExplanatoryInterface\n\n'
+            '   Note: Deprecated: Don\'t use anymore.\n')
+    
+    def test_autointerface_see(self):
+        """Make sure @see tags work with autointerface."""
+        self._file_contents_eq(
+            'autointerface_see',
+            'interface SeeInterface\n\n'
+            '   See also:\n\n'
+            '     * "DeprecatedClass"\n\n'
+            '     * "deprecatedFunction"\n\n'
+            '     * "DeprecatedAttribute"\n')
+
     def test_autoattribute(self):
         """Make sure ``autoattribute`` works."""
         self._file_contents_eq(

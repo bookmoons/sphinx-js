@@ -1,4 +1,6 @@
 from .directives import (auto_class_directive_bound_to_app,
+                         auto_interface_directive_bound_to_app,
+                         InterfaceDirective,
                          auto_function_directive_bound_to_app,
                          auto_attribute_directive_bound_to_app)
 from .doclets import gather_doclets
@@ -18,6 +20,12 @@ def setup(app):
     app.add_directive_to_domain('js',
                                 'autoclass',
                                 auto_class_directive_bound_to_app(app))
+    app.add_directive_to_domain('js',
+                                'interface',
+                                InterfaceDirective)
+    app.add_directive_to_domain('js',
+                                'autointerface',
+                                auto_interface_directive_bound_to_app(app))
     app.add_directive_to_domain('js',
                                 'autoattribute',
                                 auto_attribute_directive_bound_to_app(app))

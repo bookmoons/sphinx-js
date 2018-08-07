@@ -1,0 +1,2 @@
+.. js:autointerface:: NonAlphabeticalInterface
+   :members:

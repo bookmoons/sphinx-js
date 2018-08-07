@@ -116,6 +116,83 @@ function shadow() {}
  */
 
 /**
+ * Interface doc.
+ * @interface Interface
+ */
+
+/**
+ * Interface attribute.
+ * @var someAttribute
+ * @memberof Interface
+ */
+
+/**
+ * Interface other attribute.
+ * @var otherAttribute
+ * @memberof Interface
+ */
+
+/**
+ * Interface arg method.
+ * @method argMethod
+ * @memberof Interface
+ */
+
+/**
+ * Interface no arg method.
+ * @method noArgMethod
+ * @memberof Interface
+ */
+
+/**
+ * Interface private method.
+ * @method privateMethod
+ * @memberof Interface
+ * @private
+ */
+
+/**
+ * Non-alphabetical interface.
+ * @interface NonAlphabeticalInterface
+ */
+
+/**
+ * Fun z.
+ * @method z
+ * @memberof NonAlphabeticalInterface
+ */
+
+/**
+ * Example interface.
+ * @interface ExampleInterface
+ * @example
+ * // This is the example.
+ * new ImplementingClass();
+ */
+
+/**
+ * @interface DeprecatedInterface
+ * @deprecated
+ */
+/**
+ * @interface DeprecatedExplanatoryInterface
+ * @deprecated Don't use anymore.
+ */
+
+/**
+ * Fun a.
+ * @method a
+ * @memberof NonAlphabeticalInterface
+ */
+
+/**
+ * @interface SeeInterface
+ * @see DeprecatedClass
+ * @see deprecatedFunction
+ * @see DeprecatedAttribute
+ */
+
+/**
  * JSDoc example tag
  *
  * @example
