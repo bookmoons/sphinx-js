@@ -315,7 +315,7 @@ class AutoClassRenderer(MemberContainerRenderer):
 
 class AutoInterfaceRenderer(MemberContainerRenderer):
     _template = 'interface.rst'
-    
+
     def _template_vars(self, name, full_path, doclet):
         return dict(
             name=name,

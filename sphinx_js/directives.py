@@ -75,7 +75,7 @@ class InterfaceDirective(JSObject):
 def auto_interface_directive_bound_to_app(app):
     class AutoInterfaceDirective(JsDirective):
         """js:autointerface directive, which spits out a js:interface directive
-        
+
         Takes a single argument which is a JSDoc interface name.
         """
         option_spec = JsDirective.option_spec.copy()
@@ -84,10 +84,10 @@ def auto_interface_directive_bound_to_app(app):
                                         if members else []),
             'exclude-members': _members_to_exclude,
             'private-members': flag})
-        
+
         def run(self):
             return AutoInterfaceRenderer.from_directive(self, app).rst_nodes()
-    
+
     return AutoInterfaceDirective
 
 
