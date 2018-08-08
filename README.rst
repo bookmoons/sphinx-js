@@ -246,6 +246,44 @@ And then, in the docs... ::
 
    .. autoattribute:: Bing#bong
 
+autointerface
+-------------
+
+An interface can be documented with the ``js:autointerface`` directive. It works similarly to ``js:autoclass``. To get a full list of public attributes and methods use the ``:members:`` options::
+
+    .. js:autointerface:: SomeInterface
+       :members:
+
+You can also add private members, with privacy determined by JSDoc ``@private`` tags::
+
+    .. js:autointerface:: SomeInterface
+       :members:
+       :private-members:
+
+Exclude certain members by name with ``:exclude-members:``::
+
+    .. js:autointerface:: SomeInterface
+       :members:
+       :exclude-members: Foo, bar, baz
+
+Or explicitly list the members you want. Ordering is respected. ::
+
+    .. js:autointerface:: SomeInterface
+       :members: Qux, qum
+
+In an explicit list of members, you can include ``*`` to insert all unmentioned members. ::
+
+    .. js:autointerface: SomeInterface
+       :members: importMethod, *, uncommonlyUsedMethod
+
+Finally, if you want full control, pull your interface members in one at a time by embedding ``js:autofunction`` or ``js:autoattribute``::
+
+    .. js:autointerface:: SomeInterface
+
+       .. js:autofunction: SomeInterface#someMethod
+
+       Additional content can go here and appears below the in-code comments.
+
 Dodging Ambiguity With Pathnames
 --------------------------------
 
