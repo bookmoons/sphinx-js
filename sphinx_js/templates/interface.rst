@@ -8,10 +8,6 @@
     {{ description|indent(3) }}
    {%- endif %}
 
-   {% for heads, tail in fields -%}
-     :{{ heads|join(' ') }}: {{ tail }}
-   {% endfor %}
-
    {{ common.examples(examples)|indent(3) }}
 
    {{ content|indent(3) }}
